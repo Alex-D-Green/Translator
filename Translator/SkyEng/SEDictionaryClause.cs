@@ -26,13 +26,14 @@ namespace Translator.SkyEng
         /// <param name="clause">Clause to convert.</param>
         public static explicit operator DictionaryClause(SEDictionaryClause clause)
         {
-            // Instead one can use AutoMapper to convert types...
-
             return new DictionaryClause()
             {
-                Transcription = clause.Meanings.FirstOrDefault()?.Transcription,
-                Translations = 
-                    clause.Meanings.Select(o => new TranslationClause() { Translation = o.Translation.Text }).ToList()
+                Translations = clause.Meanings.Select(o => new TranslationClause()
+                    {
+                        Translation = o.Translation.Text,
+                        Transcription = o.Transcription,
+                        Type = o.GetWordType()
+                    }).ToList()
             };
         }
     }

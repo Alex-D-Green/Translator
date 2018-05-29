@@ -32,12 +32,13 @@ namespace Translator.LinguaLeo
         /// <param name="clause">Clause to convert.</param>
         public static explicit operator DictionaryClause(LLDictionaryClause clause)
         {
-            // Instead one can use AutoMapper to convert types...
-
             return new DictionaryClause()
             {
-                Transcription = clause.Transcription,
-                Translations = clause.Translate.Select(o => (TranslationClause)o).ToList()
+                Translations = clause.Translate.Select(o => new TranslationClause()
+                    {
+                        Translation = o.Value,
+                        Transcription = clause.Transcription
+                    }).ToList()
             };
         }
     }

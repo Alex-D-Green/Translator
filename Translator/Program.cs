@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-
 using Translator.LinguaLeo;
 using Translator.SkyEng;
 
 namespace Translator
 {
     /// <summary>
-    /// A very simple console EN->RU translator.
+    /// A very simple console EN->RU dictionary.
     /// Copyright (c) 2018 Dyachenko A.S. das2010@bk.ru
     /// </summary>
     internal class Program

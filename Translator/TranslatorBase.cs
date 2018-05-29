@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,8 +50,9 @@ namespace Translator
             ret.AppendFormat("{0}:{1}", word, Environment.NewLine);
 
             int i = 0;
-            foreach(string translate in clause.Translations.Select(o => o.Translation).Distinct())
-                ret.AppendFormat("  {0}: {1};{2}", ++i, translate, Environment.NewLine);
+            foreach(TranslationClause translate in clause.Translations)
+                ret.AppendFormat("  {0}: {1} ({2});{3}", ++i, translate.Translation, 
+                    translate.Type.ToShortFormString(), Environment.NewLine);
 
             return ret.ToString();
         }

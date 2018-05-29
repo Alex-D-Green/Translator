@@ -11,10 +11,5 @@ namespace Translator.CommonData
         /// The word translations.
         /// </summary>
         public IEnumerable<TranslationClause> Translations { get; set; }
-
-        /// <summary>
-        /// The word transcription.
-        /// </summary>
-        public string Transcription { get; set; }
     }
 }
