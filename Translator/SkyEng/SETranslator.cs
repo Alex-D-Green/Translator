@@ -3,23 +3,23 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Translator.CommonData;
 
-namespace Translator.LinguaLeo
+namespace Translator.SkyEng
 {
     /// <summary>
-    /// A translator by "http://lingualeo.com/".
+    /// A translator by "http://skyeng.ru/".
     /// </summary>
-    internal sealed class LLTranslator: TranslatorBase
+    internal sealed class SETranslator: TranslatorBase
     {
         /// <summary>
         /// LinguaLeo web service base address.
         /// </summary>
-        private const string baseAddress = "http://api.lingualeo.com/";
+        private const string baseAddress = "https://dictionary.skyeng.ru/";
 
 
         /// <summary>
         /// Translation service name.
         /// </summary>
-        public override string TranslationBy => "LinguaLeo";
+        public override string TranslationBy => "SkyEng";
 
 
         /// <summary>
@@ -34,20 +34,21 @@ namespace Translator.LinguaLeo
             {
                 client.BaseAddress = new Uri(baseAddress);
 
-                // Send HTTP GET request with "word" parameter in query string
-                HttpResponseMessage result = await client.GetAsync($"gettranslates?word={word}");
+                // Send HTTP GET request with "search" and "_format" parameters in query string
+                HttpResponseMessage result = 
+                    await client.GetAsync($"api/public/v1/words/search?_format=json&search={word}");
 
                 if(result.IsSuccessStatusCode)
                 { // Some answer is received
 
                     // Getting result data
-                    LLDictionaryClause clause = await result.Content.ReadAsAsync<LLDictionaryClause>();
+                    SEDictionaryClause[] clause = await result.Content.ReadAsAsync<SEDictionaryClause[]>();
 
-                    if(!String.IsNullOrEmpty(clause.Error_msg))
-                        throw new Exception(clause.Error_msg); // Some kind of error
+                    if(clause.Length == 0)
+                        throw new Exception("Nothing was found.");
 
                     // Everything is Ok, so fetching result
-                    return FormatClause(word, (DictionaryClause)clause);
+                    return FormatClause(word, (DictionaryClause)clause[0]);
                 }
                 else // An HTTP error occur
                     throw new Exception($"{result.StatusCode} - {result.ReasonPhrase}");

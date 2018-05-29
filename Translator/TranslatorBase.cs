@@ -13,6 +13,12 @@ namespace Translator
     internal abstract class TranslatorBase
     {
         /// <summary>
+        /// Translation service name.
+        /// </summary>
+        public abstract string TranslationBy { get; }
+
+
+        /// <summary>
         /// Translate the word asynchronously.
         /// </summary>
         /// <param name="word">A word in English for translation to Russian.</param>

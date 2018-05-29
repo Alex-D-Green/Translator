@@ -5,7 +5,7 @@ namespace Translator.LinguaLeo
     /// <summary>
     /// LinguaLeo one of the word translation.
     /// </summary>
-    internal class LLTranslationClause
+    internal sealed class LLTranslationClause
     {
         /// <summary>
         /// A translation.

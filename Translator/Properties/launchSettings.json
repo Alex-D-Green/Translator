@@ -1,7 +1,8 @@
 {
   "profiles": {
     "Translator": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "apple"
     }
   }
 }

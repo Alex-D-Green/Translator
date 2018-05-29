@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using Translator.LinguaLeo;
+using Translator.SkyEng;
 
 namespace Translator
 {
@@ -15,53 +16,47 @@ namespace Translator
         /// Entry point.
         /// </summary>
         /// <param name="args">Used for fetching words in English.</param>
-        /// <returns>App return code.</returns>
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
-            // Creating one of the translators
-            TranslatorBase translator = new LLTranslator();
-
             if(args.Length != 1)
             {
                 Console.WriteLine("You got to enter one English word.");
 
                 Console.WriteLine("Press any key...");
                 Console.ReadKey();
-
-                return -1;
             }
 
-            int ret = 0;
             string word = args[0];
-            Console.WriteLine($"Translating \"{word}\", wait a second please...");
-            Console.WriteLine();
 
-            try
+            foreach(var translator in new TranslatorBase[] { new LLTranslator(), new SETranslator() })
             {
-                // Getting translation task; 
-                // or you can use synchronous version like that: translator.Translate(word, 5000)
-                Task<string> task = translator.TranslateAsync(word);
+                Console.WriteLine($"Translating \"{word}\" with \"{translator.TranslationBy}\", wait a second please...");
+                Console.WriteLine();
 
-                if(!task.Wait(5000)) // Waiting for translation
+                try
                 {
-                    Console.WriteLine("Sorry, timeout error!");
-                    ret = -100;
-                }
-                else
-                    Console.WriteLine(task.Result);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Sorry, an error occur:");
-                Console.WriteLine(e.ToString());
+                    // Getting translation task; 
+                    // or you can use synchronous version like that: translator.Translate(word, 5000)
+                    Task<string> task = translator.TranslateAsync(word);
 
-                ret = -200;
+                    if(!task.Wait(5000)) // Waiting for translation
+                    {
+                        Console.WriteLine("Sorry, timeout error!");
+                        Console.WriteLine();
+                    }
+                    else
+                        Console.WriteLine(task.Result);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Sorry, an error occur:");
+                    Console.WriteLine(e.ToString());
+                    Console.WriteLine();
+                }
             }
 
             Console.WriteLine("Press any key...");
             Console.ReadKey();
-
-            return ret;
         }
     }
 }

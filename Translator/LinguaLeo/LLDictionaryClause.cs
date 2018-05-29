@@ -8,7 +8,7 @@ namespace Translator.LinguaLeo
     /// <summary>
     /// LinguaLeo dictionary clause.
     /// </summary>
-    internal class LLDictionaryClause
+    internal sealed class LLDictionaryClause
     {
         /// <summary>
         /// Error message if there one.
